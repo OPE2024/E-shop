@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
 import Products from "./pages/Products/Products";
+import FeaturedProducts from "./components/FeaturedProducts/FeaturedProducts";
 
 const Layout = () =>{
   return(
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path:"/",
         element:<Home/>
+      },
+      {
+        path:"/",
+        element:<FeaturedProducts/>
       },
       {
         path:"/products/:id",
