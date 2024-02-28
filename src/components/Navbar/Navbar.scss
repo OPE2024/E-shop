@@ -1,57 +1,68 @@
-.navbar{
+.navbar {
   height: 80px;
 
-  .wrapper{
+  .wrapper {
     padding: 10px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .item{
-        display: flex;
-        align-items: center;
-        font-size: 18px;
+    .dropdown-item,
+    .nav-item {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
     }
 
-    .left{
-        display: flex;
-        align-items: center;
-        gap: 25px;
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 25px;
     }
-    .center{
+
+    .center {
       font-size: 30px;
-      letter-spacing: 2px;  
+      letter-spacing: 2px;
     }
-    .right{
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+
+      .icons {
         display: flex;
-        align-items: center;
-        gap: 25px;
+        gap: 15px;
+        color: #777;
+        cursor: pointer;
 
-        .icons{
-          display: flex;
-          gap: 15px;
-          color: #777;
-          cursor: pointer;
+        .icon {
+          transition: color 0.3s ease-in-out;
 
-          .cartIcon{
-            position: relative;
-
-            span{
-              font-size: 12px;
-              width: 20px;
-              height: 20px;
-              border-radius: 50%;
-              background-color: #2879fe;
-              color: white;
-              position: absolute;
-              right: -10px;
-              top: -10px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
+          &:hover {
+            color: #2879fe; // Change color on hover
           }
         }
+
+        .cartIcon {
+          position: relative;
+
+          span {
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #2879fe;
+            color: white;
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
     }
   }
 }

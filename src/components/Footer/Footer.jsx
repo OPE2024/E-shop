@@ -1,12 +1,32 @@
-import React from "react";
-import "./Footer.scss"
+import React, { useState } from "react";
+import "./Footer.scss";
+import EmailIcon from "@mui/icons-material/Email";
+import SendIcon from "@mui/icons-material/Send";
 
 const Footer = () => {
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [userMessage, setUserMessage] = useState("");
+
+  const toggleSupport = () => {
+    setIsSupportOpen(!isSupportOpen);
+  };
+
+  const sendMessage = () => {
+    // Assuming you want to provide feedback immediately
+    setFeedback("Thank you for contacting us! We'll get back to you shortly.");
+    // You can also send the user's message to your backend or handle it as needed
+  };
+
+  const handleUserMessageChange = (e) => {
+    setUserMessage(e.target.value);
+  };
+
   return (
-    <div className='footer'>
-      <div className='top'>
+    <div className="footer">
+      <div className="top">
         <div className="item">
-          <h1>Categories</h1>
+          <h1 className="heading">Categories</h1>
           <span>Women</span>
           <span>Men</span>
           <span>Shoes</span>
@@ -14,7 +34,7 @@ const Footer = () => {
           <span>New Arrivals</span>
         </div>
         <div className="item">
-        <h1>Links</h1>
+          <h1 className="heading">Links</h1>
           <span>FAQ</span>
           <span>Pages</span>
           <span>Stores</span>
@@ -22,33 +42,50 @@ const Footer = () => {
           <span>Cookies</span>
         </div>
         <div className="item">
-        <h1>About</h1>
+          <h1 className="heading">About</h1>
           <span>
-          An eshop specializing in women's, men's, and children's clothing offers a wide range of fashion options for customers of 
-          all ages and genders. The store's product line may include everything from casual, everyday wear to formal attire, making 
-          it a convenient one-stop-shop for customers looking to update their wardrobes. 
+            A one-stop-shop for diverse clothing needs, catering to women, men, and children with options ranging from casual to formal wear.
           </span>
         </div>
         <div className="item">
-        <h1>Contact</h1>
-          <span>
-            +2347089492600
-          </span>
+          {/* <h1 className="heading">Contact</h1> */}
+          {/* <span>+234 708 949 2600</span> */}
         </div>
       </div>
+
+      <div className={`support${isSupportOpen ? " expanded" : ""}`}>
+        <h1 className="heading">Contact 📞</h1>
+        <div className="message-box">
+          <textarea
+            placeholder="Type your message..."
+            value={userMessage}
+            onChange={handleUserMessageChange}
+          />
+          <button onClick={sendMessage}>
+            <SendIcon />
+            SEND
+          </button>
+        </div>
+        <div className="icons">
+          <button>
+            <EmailIcon />
+          </button>
+        </div>
+      </div>
+      <button className="support-toggle" onClick={toggleSupport}>
+        {isSupportOpen ? "Close Support" : "Open Support"}
+      </button>
       <div className="bottom">
         <div className="left">
-          <span className="logo">Eshop</span>
-          <span className="copyright">
-          © Copyright 2023. All Rights Reserved
-          </span>
+          <span className="logo">Oasis</span>
+          <span className="copyright">© Copyright 2024. All Rights Reserved</span>
         </div>
         <div className="right">
-          <img src="/img/payment.png" alt="" />
+          <img src="/img/payment.png" alt="Accepted Payment Methods" />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

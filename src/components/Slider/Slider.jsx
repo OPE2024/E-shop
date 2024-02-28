@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
 import WestOutlinedIcon from "@mui/icons-material/WestOutlined";
 import "./Slider.scss";
@@ -13,18 +13,27 @@ const Slider = () => {
   ];
 
   const prevSlide = () => {
-    setCurrentSlide(currentSlide === 0 ? 2 : (prev) => prev - 1);
+    setCurrentSlide((prev) => (prev === 0 ? data.length - 1 : prev - 1));
   };
+
   const nextSlide = () => {
-    setCurrentSlide(currentSlide === 2 ? 0 : (prev) => prev + 1);
+    setCurrentSlide((prev) => (prev === data.length - 1 ? 0 : prev + 1));
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentSlide((prev) => (prev === data.length - 1 ? 0 : prev + 1));
+    }, 5000); // Change slide every 5 seconds (adjust as needed)
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, [data.length]);
 
   return (
     <div className="slider">
-      <div className="container" style={{transform:`translateX(-${currentSlide * 100}vw)`}}>
-        <img src={data[0]} alt="" />
-        <img src={data[1]} alt="" />
-        <img src={data[2]} alt="" />
+      <div className="container" style={{ transform: `translateX(-${currentSlide * 100}vw)` }}>
+        {data.map((image, index) => (
+          <img key={index} src={image} alt={`Slide ${index + 1}`} />
+        ))}
       </div>
       <div className="icons">
         <div className="icon" onClick={prevSlide}>
