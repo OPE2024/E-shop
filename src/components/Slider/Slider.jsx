@@ -1,48 +1,71 @@
-import React, { useState, useEffect } from "react";
-import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
-import WestOutlinedIcon from "@mui/icons-material/WestOutlined";
+import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Slider.scss";
+import videoFile from "../../videos/pexels-mehmet-kılınç-19002091 (Original).mp4";
+import waterSound from "../../audios/Calming-beach-sounds.mp3";
 
 const Slider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const data = [
-    "https://images.pexels.com/photos/1549200/pexels-photo-1549200.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    "https://images.pexels.com/photos/949670/pexels-photo-949670.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    "https://images.pexels.com/photos/837140/pexels-photo-837140.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  ];
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? data.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === data.length - 1 ? 0 : prev + 1));
-  };
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentSlide((prev) => (prev === data.length - 1 ? 0 : prev + 1));
-    }, 5000); // Change slide every 5 seconds (adjust as needed)
+    const cleanup = () => {
+      const currentVideoRef = videoRef.current;
+      const currentAudioRef = audioRef.current;
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [data.length]);
+      if (currentVideoRef) {
+        currentVideoRef.pause();
+      }
+
+      if (currentAudioRef) {
+        currentAudioRef.pause();
+      }
+    };
+
+    // Attach the cleanup function to the beforeunload event
+    window.addEventListener("beforeunload", cleanup);
+
+    return () => {
+      window.removeEventListener("beforeunload", cleanup);
+    };
+  }, []);
+
+  useEffect(() => {
+    const playVideoAndAudio = async () => {
+      await videoRef.current.play();
+      await audioRef.current.play();
+    };
+
+    playVideoAndAudio();
+
+    const intervalId = setInterval(() => {
+      if (navigate) {
+        navigate("/");
+      }
+    }, 5000); // Change slide every 5 seconds and navigate to the home page
+
+    return () => {
+      clearInterval(intervalId);
+      const currentVideoRef = videoRef.current;
+      const currentAudioRef = audioRef.current;
+
+      if (currentVideoRef) {
+        currentVideoRef.pause();
+      }
+
+      if (currentAudioRef) {
+        currentAudioRef.pause();
+      }
+    };
+  }, [navigate]);
 
   return (
     <div className="slider">
-      <div className="container" style={{ transform: `translateX(-${currentSlide * 100}vw)` }}>
-        {data.map((image, index) => (
-          <img key={index} src={image} alt={`Slide ${index + 1}`} />
-        ))}
+      <div className="container">
+        <video ref={videoRef} src={videoFile} type="video/mp4" autoPlay loop muted />
       </div>
-      <div className="icons">
-        <div className="icon" onClick={prevSlide}>
-          <WestOutlinedIcon />
-        </div>
-        <div className="icon" onClick={nextSlide}>
-          <EastOutlinedIcon />
-        </div>
-      </div>
+      <audio ref={audioRef} src={waterSound} type="audio/mp3" autoPlay loop />
     </div>
   );
 };
